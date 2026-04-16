@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Cake</title>
+    <title>Add Cake</title>
 
+    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -45,10 +46,11 @@
             background: rgba(255,255,255,0.2);
         }
 
-        /* CONTAINER */
+        /* CENTER BOX */
         .container {
             display: flex;
             justify-content: center;
+            align-items: center;
             padding: 40px 20px;
         }
 
@@ -64,24 +66,7 @@
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* PREVIEW */
-        .preview {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .preview img {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 15px;
-        }
-
-        .preview h3 {
-            margin-top: 10px;
+            margin-bottom: 25px;
         }
 
         .form-group {
@@ -90,8 +75,8 @@
 
         label {
             font-size: 14px;
-            margin-bottom: 6px;
             display: block;
+            margin-bottom: 6px;
             opacity: 0.8;
         }
 
@@ -113,13 +98,28 @@
             background: rgba(255,255,255,0.2);
         }
 
+        /* IMAGE PREVIEW */
+        .preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .preview img {
+            max-width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            display: none;
+            margin-top: 10px;
+        }
+
         /* BUTTON */
         button {
             width: 100%;
             padding: 14px;
             border: none;
             border-radius: 12px;
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
             color: white;
             font-size: 16px;
             font-weight: 600;
@@ -129,7 +129,7 @@
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,242,254,0.4);
+            box-shadow: 0 10px 25px rgba(255,118,150,0.4);
         }
 
         .back {
@@ -138,7 +138,7 @@
         }
 
         .back a {
-            color: #ccc;
+            color: #ddd;
             text-decoration: none;
         }
 
@@ -158,46 +158,43 @@
 
 <div class="container">
     <div class="box">
-        <h2>✏️ Edit Cake</h2>
-
-        <div class="preview">
-            <img id="previewImg" src="{{ cake.image }}">
-            <h3 id="previewName">{{ cake.name }}</h3>
-        </div>
+        <h2>➕ Add New Cake</h2>
 
         <form method="POST">
             <div class="form-group">
                 <label>🍰 Cake Name</label>
-                <input id="nameInput" name="name" value="{{ cake.name }}" required>
+                <input name="name" placeholder="Chocolate Cake" required>
             </div>
 
             <div class="form-group">
                 <label>💰 Price</label>
-                <input name="price" type="number" step="0.01" value="{{ cake.price }}" required>
+                <input name="price" type="number" step="0.01" required>
             </div>
 
             <div class="form-group">
                 <label>🖼️ Image URL</label>
-                <input id="imageInput" name="image" value="{{ cake.image }}">
+                <input id="imageInput" name="image" placeholder="Paste image URL">
+                
+                <div class="preview">
+                    <img id="previewImg">
+                </div>
             </div>
 
             <div class="form-group">
                 <label>📦 Stock</label>
-                <input name="stock" type="number" value="{{ cake.stock or 0 }}">
+                <input name="stock" type="number" value="0">
             </div>
 
             <div class="form-group">
                 <label>🏷️ Category</label>
                 <select name="category_id">
                     {% for category in categories %}
-                    <option value="{{ category.id }}" {% if category.id == cake.category_id %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
+                    <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
                 </select>
             </div>
 
-            <button type="submit">🚀 Update Cake</button>
+            <button type="submit">🚀 Add Cake</button>
         </form>
 
         <div class="back">
@@ -207,17 +204,16 @@
 </div>
 
 <script>
-    const imgInput = document.getElementById("imageInput");
-    const previewImg = document.getElementById("previewImg");
-    const nameInput = document.getElementById("nameInput");
-    const previewName = document.getElementById("previewName");
+    const input = document.getElementById("imageInput");
+    const preview = document.getElementById("previewImg");
 
-    imgInput.addEventListener("input", () => {
-        previewImg.src = imgInput.value;
-    });
-
-    nameInput.addEventListener("input", () => {
-        previewName.innerText = nameInput.value;
+    input.addEventListener("input", () => {
+        if(input.value){
+            preview.src = input.value;
+            preview.style.display = "block";
+        } else {
+            preview.style.display = "none";
+        }
     });
 </script>
 
